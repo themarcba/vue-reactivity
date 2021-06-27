@@ -91,3 +91,11 @@ function ref(raw) {
     }
     return r
 }
+
+// Computed property
+function computed(getter) {
+    let result = ref()
+    effect(() => {
+        result.value = getter()
+    })
+}
