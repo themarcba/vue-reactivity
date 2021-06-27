@@ -11,13 +11,26 @@ const calculateTotal = () => {
     total = product.price * product.quantity
 }
 
-let dep = new Set() // list of effects will be saved here
+let targetMap = new WeakMap()
 
 // Register an effect
 function track(target, key) {
     console.log('🔎 track', key)
-    // target and key are not used yet.
-    // they will come into play in stage 5
+    // Get depsMap from targetMap
+    let depsMap = targetMap.get(target)
+    if (!depsMap) {
+        // new depsMap if it doesn't exist yet
+        depsMap = new Map()
+        targetMap.set(target, depsMap)
+    }
+
+    // Get dep from depsMap
+    let dep = depsMap.get(key)
+    if (!dep) {
+        // new dep if it doesn't exist yet
+        dep = new Set()
+        depsMap.set(key, dep)
+    }
 
     // Add effect
     dep.add(calculateTotal)
@@ -26,8 +39,19 @@ function track(target, key) {
 // Execute all registered effects for the target/key combination
 function trigger(target, key) {
     console.log('💥 trigger', key)
-    // target and key are not used yet.
-    // they will come into play in stage 5
+    // Get depsMap from targetMap
+    let depsMap = targetMap.get(target)
+    if (!depsMap) {
+        // If there is no depsMap, no need to resume
+        return
+    }
+
+    // Get dep from depsMap
+    let dep = depsMap.get(key)
+    if (!dep) {
+        // If there is no dep, no need to resume
+        return
+    }
 
     // Execute all effects
     dep.forEach(effect => effect())
@@ -51,10 +75,12 @@ function reactive(target) {
     }
     return new Proxy(target, handler)
 }
+
 // still needs to be executed once!
 // if not, the properties will never be tracked
 // this will be fixed in stage 6
 calculateTotal()
 
-product.price = 12
-product.quantity = 5
+console.log(total)
+product.quantity = 100
+console.log(product.quantity)
