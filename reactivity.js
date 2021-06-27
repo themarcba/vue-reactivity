@@ -74,3 +74,20 @@ function effect(fn) {
     if (activeEffect) activeEffect()
     activeEffect = null
 }
+
+// The ref class is a reactive object with a single value (called "value")
+function ref(raw) {
+    let r = {
+        // Intercept getter
+        get value() {
+            track(r, 'value')
+            return raw
+        },
+        // Intercept setter
+        set value(newValue) {
+            raw = newValue
+            trigger(r, 'value')
+        },
+    }
+    return r
+}
