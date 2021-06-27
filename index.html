@@ -11,15 +11,28 @@
         <h2>$ <span id="total">0</span></h2>
         <button onclick="product.quantity--">-</button>
         <button onclick="product.quantity++">+</button>
+        <input
+            type="color"
+            value="#ff69b4"
+            oninput="product.color = this.value"
+        />
 
         <script src="reactivity.js"></script>
         <script>
-            const product = reactive({ price: 15, quantity: 2 })
+            const product = reactive({
+                price: 15,
+                quantity: 2,
+                color: 'hotpink',
+            })
             let total = 0
 
             effect(() => {
                 total = product.price * product.quantity
                 document.getElementById('total').innerText = total
+            })
+
+            effect(() => {
+                document.body.style.backgroundColor = product.color
             })
         </script>
     </body>
