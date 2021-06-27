@@ -9,5 +9,14 @@
     <body>
         <h1>Vue is awesome!</h1>
         <script src="reactivity.js"></script>
+        <script>
+            const product = reactive({ price: 15, quantity: 2 })
+            let total = 0
+
+            // Actually registering a side effect
+            effect(() => {
+                total = product.price * product.quantity
+            })
+        </script>
     </body>
 </html>

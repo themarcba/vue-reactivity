@@ -76,15 +76,3 @@ function effect(fn) {
     if (activeEffect) activeEffect()
     activeEffect = null
 }
-
-const product = reactive({ price: 15, quantity: 2 })
-let total = 0
-
-// Actually registering a side effect
-effect(() => {
-    total = product.price * product.quantity
-})
-
-console.log(total)
-product.quantity = 100
-console.log(product.quantity)
