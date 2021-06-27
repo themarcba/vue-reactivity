@@ -22,17 +22,12 @@
             const product = reactive({
                 price: 15,
                 quantity: 2,
-                color: 'hotpink',
             })
             let total = 0
 
             effect(() => {
                 total = product.price * product.quantity
                 document.getElementById('total').innerText = total
-            })
-
-            effect(() => {
-                document.body.style.backgroundColor = product.color
             })
         </script>
     </body>
