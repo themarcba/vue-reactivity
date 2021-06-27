@@ -3,14 +3,7 @@
 // Marc Backes (@themarcba)
 // ----------------------------------------------------------------
 
-const product = reactive({ price: 15, quantity: 2 })
-
-let total = 0
-
-const calculateTotal = () => {
-    total = product.price * product.quantity
-}
-
+let activeEffect = null
 let targetMap = new WeakMap()
 
 // Register an effect
@@ -33,7 +26,7 @@ function track(target, key) {
     }
 
     // Add effect
-    dep.add(calculateTotal)
+    if (activeEffect) dep.add(activeEffect)
 }
 
 // Execute all registered effects for the target/key combination
@@ -76,10 +69,21 @@ function reactive(target) {
     return new Proxy(target, handler)
 }
 
-// still needs to be executed once!
-// if not, the properties will never be tracked
-// this will be fixed in stage 6
-calculateTotal()
+// Watcher
+function effect(fn) {
+    activeEffect = fn
+    // Only execute when there is an activeEffect
+    if (activeEffect) activeEffect()
+    activeEffect = null
+}
+
+const product = reactive({ price: 15, quantity: 2 })
+let total = 0
+
+// Actually registering a side effect
+effect(() => {
+    total = product.price * product.quantity
+})
 
 console.log(total)
 product.quantity = 100
