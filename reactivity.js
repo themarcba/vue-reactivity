@@ -8,7 +8,6 @@ let targetMap = new WeakMap()
 
 // Register an effect
 function track(target, key) {
-    console.log('🔎 track', key)
     // Get depsMap from targetMap
     let depsMap = targetMap.get(target)
     if (!depsMap) {
@@ -31,7 +30,6 @@ function track(target, key) {
 
 // Execute all registered effects for the target/key combination
 function trigger(target, key) {
-    console.log('💥 trigger', key)
     // Get depsMap from targetMap
     let depsMap = targetMap.get(target)
     if (!depsMap) {
