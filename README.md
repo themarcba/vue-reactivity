@@ -4,8 +4,6 @@ This material was created by [Marc Backes](https://twitter.com/themarcba) in ord
 
 It contains a basic implementation of the Vue 3 reactivity engine - from scratch.
 
-_A from the WeAreDevelopers World Congress 2021 will be linked here once it is released for the public._
-
 # Stages
 
 This is the **main branch**, but there are branches that represent different stages of the project, so people can follow along step by step.
